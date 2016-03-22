@@ -92,7 +92,7 @@ def serch_for_places():
 		print '---'
 		print '--'
 		print '-'
-		if 0 <= random_place < 1:
+		if 0 <= random_place < 0.1:
 			print 'In some time you suddenly find a Vault 15'
 			return 1
 		elif 0.1 <= random_place < 0.2:
