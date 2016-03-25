@@ -10,7 +10,8 @@ def intro():
 	print '--------------------------------------------------------------------------------'
 
 intro()
-
+#Visited or not places
+visit_15, visit_shady, visit_junktown, visit_12, visit_necropolis, save_game = [], [], [], [], [], ['no']
 
 #Main choice where to go and what to do
 def serch_for_places():
@@ -32,7 +33,7 @@ def serch_for_places():
 		print '---'
 		print '--'
 		print '-'
-		if 0 <= random_place < 0.2:
+		if 0 <= random_place < 0.1:
 			if decided_to_go == ('Vault 15').lower():
 				print 'In some time you find a Vault 15'
 				return 1
@@ -48,13 +49,13 @@ def serch_for_places():
 			elif decided_to_go == ('Necropolis').lower():
 				print 'In some time you find a Necropolis'
 				return 5
-		elif 0.2 <= random_place < 0.3:
+		elif 0.1 <= random_place < 0.3:
 			print ('Walked around in Waste Land you find a lemontree.. Here almost everything is dead, abandoned houses, '
 					'skeletons everywhere, but lemontree looks prety fresh. Strange...')
 			return serch_for_places()
 		elif 0.3 <= random_place < 0.5:
 			print 'You meet lonely walked lady about 25-27 years old. Suddenly she asks to play a game?? "stone, scissors & papper" for few times'
-			play_girl = raw_input('Will you play? (y/n)').lower()
+			play_girl = raw_input('Will you play? (y/n) ').lower()
 			
 			if play_girl == 'y' or play_girl == 'yes':
 				print '--------------------------------------------------------------------------------'
@@ -183,28 +184,36 @@ def more():
 		print '--------------------------------------------------------------------------------'
 		return serch_for_places()
 
-
 #Review of founded place
 def place_founded(place):
 	print '--------------------------'
 	if place == 1:
-		print ("Vault 15 is another one vault of Vaut Tec Web, and here has to be a "
-				"water chip you need. Unfortunatly it looks abandoned for a long "
-				"time... There's nothing else to do just walk around and look for something useful of interesting")
+		if not visit_15:
+			print ("Vault 15 is another one vault of Vaut Tec Web, and here has to be a "
+					"water chip you need. Unfortunatly it looks abandoned for a long "
+					"time... There's nothing useful or interesting here")
+			visit_15.append('visited')
 		return place_founded(serch_for_places())
 	elif place == 2:
-		print ('Shady Sands is a small willage, founded by former Vault 15 members.. Now they are farmers, in majority. '
-				'No signs of high technologies for a first look.')
+		if not visit_shady:
+			print ('Shady Sands is a small willage, founded by former Vault 15 members.. Now they are farmers, in majority. '
+					'No signs of high technologies for a first look.')
+			visit_shady.append('visited')
 		return place_founded(serch_for_places())
 	elif place == 3:
-		print ("Junktown is a big city, with casino and bordels. Also here are a lot of stores, including "
-				"gun stores. Let's walk around and watch what can we find")
+		if not visit_junktown:
+			print ("Junktown is a big city, with casino and bordels. Also here are a lot of stores, including "
+					"gun stores. Let's walk around and watch what can we find")
+			visit_junktown.append('visited')
 		return place_founded(serch_for_places())
 	elif place == 4:
-		print ('Vault 12 is abandoned... It seems like everything in nowadays world is lost.. Where do I have to '
-				'find what I look for? Wait, I heat some noise there, inside. What a FU.. MUTANTS!!!')
+		if not visit_12:
+			print ('Vault 12 is abandoned... It seems like everything in nowadays world is lost.. Where do I have to '
+					'find what I look for? Wait, I heat some noise there, inside. What a FU.. MUTANTS!!!')
+			visit_12.append('visited')
 		go_in = raw_input('It seems there must be something important inside. Should I try to get in? (y/n) ').lower()
 		if go_in == 'y' or go_in == 'yes':
+			save_game[0] = raw_input('Do you want to save game before go inside? (y/n) ')
 			return explore_place()
 		else:
 			return place_founded(serch_for_places())
@@ -215,15 +224,17 @@ def place_founded(place):
 
 #Explore the Vault 12 to find Water chip
 def explore_place():
-	print ("At the entrance into the vault you can see a big strong mutant Gregore. He looks very strong but no very smart. Oh, he just "
+	print ("At the entrance into the vault you can see a big strong mutant Gregore. He looks very strong but not very smart. Oh, he just "
 			"noticed you and order you to come slowly or he'll shoot you. Lets try to talk to him")
-	print "Who are you? I don't like you!"
-	lst = ['1. mutant', '2. zombie', '3. robot', '4. alien', '5. man', '6. school-girl', '7. boy-scout', '8. cow', '9. tree'] 
+	print "Gregore - Who are you? I don't like you!"
+	lst = ['1. Mutant', '2. Zombie', '3. Robot', '4. Alien', '5. Man', '6. School-girl', '7. Boy-scout', '8. Cow', '9. Tree'] 
 	for var in lst:
 		print var
-	mut_talk = int(raw_input().lower())
+	mut_talk = int(raw_input('Choose number: '))
+	print lst[mut_talk - 1][3:]
+	print '--------------------------'
 	luck = random()
-	if mut_talk == 'mutant' or mut_talk == 1:
+	if mut_talk == 1:
 		if 0 <= luck < 0.5:
 			print "Hm, you look strange for mutant but okey, you can go inside"
 			print '---'
@@ -238,16 +249,16 @@ def explore_place():
 			print "You find the Water Chip inside!!! Your vault is saved!!!"
 		else:
 			print "You tried to fool Gregore, that was bad idea.. Gregore start shooting and you die!"
-	elif mut_talk == 'zombie' or mut_talk == 2:
+	elif mut_talk == 2:
 		if 0 <= luck < 0.3:
 			print "I don't like zombies, go away"
 			return place_founded(serch_for_places())
 		elif 0.3 <= luck < 0.6:
-			print "Realy? Okey, anyway there is nothing you to do here"
+			print "Realy? Okey, anyway there is nothing you to do here. Go away"
 			return place_founded(serch_for_places())
 		else:
 			print "Ha-Ha-Ha, die you maggot!!!  Gregore start shooting and you die!"
-	elif mut_talk == 'robot' or mut_talk == 3:
+	elif mut_talk == 3:
 		if  0 <= luck < 0.4:
 			print "Hm, okey. You go inside"
 			print '---'
@@ -256,25 +267,25 @@ def explore_place():
 			print "You find the water chip inside!!! Your vault is saved!!!"
 		else:
 			print "What a??? You tried to fool Gregore, that was bad idea..  Gregore start shooting and you die!"
-	elif mut_talk == 'alien' or mut_talk == 4:
+	elif mut_talk == 4:
 		if 0 <= luck < 0.2:
-			print "Gregore run away and leave hit minigun.  You take it and go inside the vault"
+			print "Gregore run away and leave his minigun.  You take it and go inside the vault"
 			print '---'
 			print '--'
 			print '-'
 			print "You find the Water Chip inside!!! Your vault is saved!!!"
 		else:
 			print "What a??? You tried to fool Gregore, that was bad idea..  Gregore start shooting and you die!"
-	elif mut_talk == 'man' or mut_talk == 5:
+	elif mut_talk == 5:
 		print "Ha-Ha-Ha, die you maggot!!!  Gregore start shooting and you die!"
-	elif mut_talk == 'school-girl' or mut_talk == 6:
+	elif mut_talk == 6:
 		print "What a??? You tried to fool Gregore, that was bad idea..  Gregore start shooting and you die!"
-	elif mut_talk == 'boy-scout' or mut_talk == 7:
+	elif mut_talk == 7:
 		print "What a??? You tried to fool Gregore, that was bad idea..  Gregore start shooting and you die!"
-	elif mut_talk == 'cow' or mut_talk == 8:
+	elif mut_talk == 8:
 		print "What a??? You tried to fool Gregore, that was bad idea..  Gregore start shooting and you die!"
-	elif mut_talk == 'tree' or mut_talk == 9:
-		if 0 <= luck < 0.2:
+	elif mut_talk == 9:
+		if 0 <= luck < 0.4:
 			print "Gregore are baffled, but can't say nothing. You just go inside very slowly)))"
 			print '---'
 			print '--'
@@ -284,6 +295,16 @@ def explore_place():
 			print "What a??? You tried to fool Gregore, that was bad idea..  Gregore start shooting and you die!"
 	else:
 		print "Gregore start shooting and you die!"
+
+	if save_game[0] == 'y' or save_game[0] == 'yes':
+		load_save_game = raw_input('Do you want to load saved game? (y/n): ').lower()
+		if load_save_game == 'y' or load_save_game == 'yes':
+			print '--------------------------'
+			print 'loading...'
+			print '--------------------------'
+			explore_place()
+		else:
+			print '--------------The End--------------'
 
 place_founded(serch_for_places())
 
